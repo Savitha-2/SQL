@@ -1,0 +1,237 @@
+1.   Population of Germany
+
+SELECT population FROM world
+  WHERE name = 'Germany';
+
+
+2. Show the name and the population for 'Sweden', 'Norway' and 'Denmark'.
+
+SELECT name, population FROM world
+  WHERE name  IN ('Sweden' ,'Norway','Denmark');
+
+
+3.Show the name of country whose area is between 200000 and 250000
+
+SELECT name, area FROM world
+  WHERE area BETWEEN 200000 AND 250000;
+
+
+4 . Show the name and population of country whose name strat with "Al"
+
+ SELECT name, population
+      FROM world
+      WHERE name LIKE "Al%";
+
+
+5. Show the name of Country whose name ends with 'A' or 'L'
+
+    SELECT name, population
+      FROM world
+      WHERE name LIKE "%A" OR name LIKE "%L" ;
+
+
+6. Show the countries with an area larger than 50000 and a population smaller than 10000000
+
+    SELECT name, area, population
+      FROM world
+      WHERE area > 50000 AND population < 10000000;
+
+7.  shows the population density of China, Australia, Nigeria and France
+
+    SELECT name, population/area AS population_density
+      FROM world
+      WHERE name IN ('China', 'Australia', 'Nigeria', 'France');
+
+8. Show the name and population in millions for the countries of the continent 'South America'. Divide the population by 1000000 to get population in millions.
+
+    SELECT name, population/1000000 AS population_in_millions
+      FROM world
+      WHERE continent = 'South America';
+
+9.      Give the name and the per capita GDP for those countries with a population of at least 200 million.
+
+    SELECT name, gdp/population AS per_capita_gdp
+      FROM world
+      WHERE population >= 200000000;
+
+10.      Show the name and population for France, Germany, Italy.
+
+    SELECT name, population
+      FROM world
+      WHERE name IN ('France', 'Germany', 'Italy');
+
+11. Show the countries which have a name that includes the word 'United'
+
+    SELECT name
+      FROM world
+      WHERE name LIKE '%United%';
+
+12. Two ways to be big: A country is big if it has an area of more than 3 million sq km or it has a population of more than 250 million.
+
+Show the countries that are big by area or big by population. Show name, population and area.
+
+    SELECT name, population, area
+      FROM world
+      WHERE area > 3000000 OR population > 250000000;
+
+
+13.Show the countries that are big by area (more than 3 million) or big by population (more than 250 million) but not both. Show name, population and area.
+
+Australia has a big area but a small population, it should be included.
+Indonesia has a big population but a small area, it should be included.
+China has a big population and big area, it should be excluded.
+United Kingdom has a small population and a small area, it should be excluded.
+
+    SELECT name, population, area
+      FROM world
+      WHERE (area > 3000000 OR population > 250000000)
+        AND NOT (area > 3000000 AND population > 250000000);
+
+14 .   Show the name and population in millions and the GDP in billions for the countries of the continent 'South America'. Use the ROUND function to show the values to two decimal places.
+
+For Americas show population in millions and GDP in billions both to 2 decimal places.
+
+    SELECT name,
+           ROUND(population/1000000, 2) AS population_in_millions,
+           ROUND(gdp/1000000000, 2) AS gdp_in_billions
+      FROM world
+      WHERE continent = 'South America';  
+
+15. Show the name and per-capita GDP for those countries with a GDP of at least one trillion (1000000000000; that is 12 zeros). Round this value to the nearest 1000.
+
+Show per-capita GDP for the trillion dollar countries to the nearest $1000.
+    
+    SELECT name,
+           ROUND(gdp/population, -3) AS per_capita_gdp
+      FROM world
+      WHERE gdp >= 1000000000000;   
+
+---  ROUND(number, decimal_places)
+-- If decimal_places is a positive number, the number is rounded to the specified number of decimal places to the right of the decimal point.
+-- If decimal_places is 0, the number is rounded to the nearest integer.
+-- If decimal_places is a negative number, the number is rounded to the left of the decimal
+-- (-1 means round to the nearest 10)
+-- (-2 means round to the nearest 100)
+-- (-3 means round to the nearest 1000)
+
+
+
+ 16. Show the name and capital where the name and the capital have the same number of characters.
+
+     SELECT name, capital
+        FROM world
+        WHERE LENGTH(name) = LENGTH(capital);
+
+
+17. Show the name and the capital where the first letters of each match. Donot include countries where the name and the capital are the same word.
+
+    SELECT name, capital
+      FROM world
+      WHERE LEFT(name, 1) = LEFT(capital, 1)
+        AND name <> capital;
+
+---LEFT(name, 1) → first letter of country name
+
+--LEFT(capital, 1) → first letter of capital ,  = → checks if first letters match
+
+--name <> capital → excludes cases where both are the same word
+
+
+18. Find the country that has all the vowels and no spaces in its name.
+
+    SELECT name
+      FROM world
+      WHERE name LIKE '%a%'
+        AND name LIKE '%e%'
+        AND name LIKE '%i%'
+        AND name LIKE '%o%'
+        AND name LIKE '%u%'
+        AND name NOT LIKE '% %';
+--AND name NOT LIKE '% %' → excludes names with spaces
+--LIKE '%a%' → checks if 'a' is present anywhere in the name
+--LIKE '%e%' → checks if 'e' is present anywhere in the name
+--LIKE '%i%' → checks if 'i' is present anywhere in the name
+--LIKE '%o%' → checks if 'o' is present anywhere in the name    
+--LIKE '%u%' → checks if 'u' is present anywhere in the name
+--All conditions combined with AND to ensure all vowels are present
+
+
+19. Show the name and population of countries where the population contains all four digits: 1, 2, 3, and 4.
+
+    SELECT name, population
+      FROM world
+      WHERE CAST(population AS CHAR) LIKE '%1%'
+        AND CAST(population AS CHAR) LIKE '%2%'
+        AND CAST(population AS CHAR) LIKE '%3%'
+        AND CAST(population AS CHAR) LIKE '%4%';
+
+--CAST(population AS CHAR) → converts population number to string for pattern matching
+--LIKE '%1%' → checks if '1' is present anywhere in the population string 
+--LIKE '%2%' → checks if '2' is present anywhere in the population string
+--LIKE '%3%' → checks if '3' is present anywhere in the population string 
+--LIKE '%4%' → checks if '4' is present anywhere in the population string
+--All conditions combined with AND to ensure all digits are present
+
+20. Show all details (yr, subject, winner) of the literature prize winners for 1980 to 1989 inclusive.
+   
+     SELECT *
+      FROM nobel
+      WHERE subject = 'Literature'
+        AND yr BETWEEN 1980 AND 1989;
+
+21. Show the year, subject, and name of physics winners for 1980 together with the chemistry winners for 1984.
+
+    SELECT yr, subject, winner
+      FROM nobel
+      WHERE (subject = 'Physics' AND yr = 1980)
+         OR (subject = 'Chemistry' AND yr = 1984);
+
+22. Show all details of Nobel prize winners whose subject is either 'Chemistry' or 'Peace' and who won the prize before 1970.
+
+    SELECT *
+      FROM nobel
+      WHERE subject IN ('Chemistry', 'Peace')
+        AND yr < 1970;
+
+23. Show the year, subject, and name of winners for 1980 excluding chemistry and medicine
+
+    SELECT yr, subject, winner
+      FROM nobel
+      WHERE yr = 1980
+        AND subject NOT IN ('Chemistry', 'Medicine');
+
+24. Show all details of Nobel prize winners whose subject is either 'Chemistry' or 'Peace' and who won the prize in or after 1990 but before 2000.  
+
+    SELECT *
+      FROM nobel
+      WHERE subject IN ('Chemistry', 'Peace')
+        AND yr >= 1990 AND yr < 2000;
+
+
+25. Show year, subject, and name of people who won a 'Medicine' prize in an early year (before 1910, not including 1910) together with winners of a 'Literature' prize in a later year (after 2004, including 2004)
+
+    SELECT yr, subject, winner
+      FROM nobel
+      WHERE (subject = 'Medicine' AND yr < 1910)
+         OR (subject = 'Literature' AND yr >= 2004);
+
+---(subject = 'Medicine' AND yr < 1910) → filters Medicine winners before 1910
+---OR → combines the two conditions
+---(subject = 'Literature' AND yr >= 2004) → filters Literature winners from 2004 onwards
+
+
+26.List the winners, year and subject where the winner starts with Sir. Show the the most recent first, then by name order.
+
+    SELECT winner, yr, subject
+      FROM nobel
+      WHERE winner LIKE 'Sir%'
+      ORDER BY yr DESC, winner ASC;
+        
+27. Show the 1984 winners and subject ordered by subject and winner name; but list chemistry and physics last.
+
+SELECT winner, subject
+  FROM nobel
+ WHERE yr=1984 
+ ORDER BY  subject in ('chemistry','physics') ,subject,winner 
+
+
