@@ -1,0 +1,128 @@
+1.Find the country that start with Y
+
+SELECT name FROM world
+WHERE name LIKE 'Y%';
+
+2.Find the countries that end with y
+
+SELECT name FROM world
+  WHERE name LIKE '%y';
+
+3. Find the countries that contain the letter x
+
+SELECT name FROM world
+  WHERE name LIKE '%x%';
+
+
+4.Find the countries that end with land.
+
+SELECT name FROM world
+  WHERE name LIKE '%land';
+
+5. Find the countries that start with C and end with ia.
+
+SELECT name FROM world
+  WHERE name LIKE 'C%ia';
+
+6. Find the countries that have three or more a in the name
+
+SELECT name
+FROM world
+WHERE name LIKE '%a%a%a%';
+
+7.Find the countries that have "t" as the second character.
+
+SELECT name FROM world
+ WHERE name LIKE '_t%'
+ORDER BY name;
+
+8.Find the countries that have two "o" characters separated by two others.
+
+SELECT name
+FROM world
+WHERE name LIKE '%o__o%';
+
+
+9.Find the countries that have exactly four characters.
+
+SELECT name FROM world
+ WHERE name LIKE '____';
+
+10.Find the country where the  country name is the capital city.
+
+SELECT name
+  FROM world w
+ WHERE w.name=w.capital;
+
+
+11.Find the country where the capital is the country plus "City".
+
+SELECT name
+FROM world
+WHERE capital = CONCAT(name, ' City');
+
+
+12. Find the capital and the name where the capital includes the name of the country.
+
+SELECT capital, name
+FROM world
+WHERE capital LIKE CONCAT('%', name, '%');
+
+-- LIKE '%country%' checks whether the capital contains the country name anywhere
+
+13. Find the capital and the name where the capital is an extension of name of the country.
+
+SELECT capital, name
+FROM world
+WHERE capital LIKE CONCAT(name, '%')
+  AND capital <> name;
+
+-- capital LIKE CONCAT(name, '%')
+-- → capital starts with the country name
+
+-- capital <> name
+-- → excludes cases where capital and country are exactly the same
+
+
+14. Show the name and the extension where the capital is a proper (non-empty) extension of name of the country.
+
+SELECT name,
+       SUBSTRING(capital, LENGTH(name) + 1) AS extension
+FROM world
+WHERE capital LIKE CONCAT(name, '%')
+  AND capital <> name;
+
+-- LENGTH(name) → number of characters in the country name
+
+-- SUBSTRING(capital, LENGTH(name) + 1)
+-- → starts right after the country name and returns the rest (the extension)
+
+-- capital <> name
+-- → ensures the extension is non-empty  
+  
+
+  OR
+
+SELECT name,
+       REPLACE(capital, name, '') AS extension
+FROM world
+WHERE capital LIKE CONCAT(name, '%')
+  AND capital <> name;
+
+---capital LIKE CONCAT(name, '%')
+--capital starts with the country name
+
+---capital <> name
+-- ensures the extension is non-empty
+--REPLACE(capital, name, '')
+-- removes the country name from the capital, leaving only the extension  
+
+
+
+
+
+
+
+
+
+
